@@ -1,20 +1,31 @@
 #pragma once
 
-#include <algorithm>
 #include <cctype>
-#include <charconv>
 #include <cstdlib>
 #include <cstring>
-#include <iterator>
+#include <iostream>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
-enum class TokenType { _return, _int, semi, let, _if, _else, var };
+enum class TokenType {
+  _return,    // return
+  _int,       // integer
+  semi,       // ';'
+  let,        // let, variable assignment operator
+  _if,        // if
+  _else,      // else
+  var,        // variable ex; x
+  open_pren,  // '('
+  close_pren, // ')'
+  open_box,   // '['
+  close_box,  // ']'
+  open_curly, // '{'
+  close_curly // '}'
+};
 
 struct Token {
   TokenType type;
@@ -33,7 +44,7 @@ public:
     int line_num = 1;
     while (peek()) {
       if (isalpha(peek().value())) {
-        
+
         buffer.push_back(consume());
 
         while (peek().has_value() && isalnum(peek().value())) {
@@ -60,30 +71,52 @@ public:
           buffer.clear();
         }
 
-      }
-      else if(isdigit(peek().value())){
-        
+      } else if (isdigit(peek().value())) {
+
         buffer.push_back(consume());
-        
-        while(peek().value()&&isdigit(peek().value())){
+
+        while (peek().value() && isdigit(peek().value())) {
           buffer.push_back(consume());
         }
-        
+
         tokens.push_back({TokenType::_int, line_num, buffer});
         buffer.clear();
       }
 
-      else if(isspace(peek().value())){
+      else if (peek().value() == '(') {
+        tokens.push_back({TokenType::open_pren, line_num});
+        buffer.clear();
+      }
+      else if (peek().value() == ')') {
+        tokens.push_back({TokenType::close_pren, line_num});
+        buffer.clear();
+      }
+      else if (peek().value() == '{') {
+        tokens.push_back({TokenType::open_curly, line_num});
+        buffer.clear();
+      }
+      else if (peek().value() == '}') {
+        tokens.push_back({TokenType::close_curly, line_num});
+        buffer.clear();
+      }
+      else if (peek().value() == '[') {
+        tokens.push_back({TokenType::open_box, line_num});
+        buffer.clear();
+      }
+      else if (peek().value() == ']') {
+        tokens.push_back({TokenType::close_box, line_num});
+        buffer.clear();
+      }
+      else if (isspace(peek().value())) {
         consume();
       }
-
-      else if(peek().value()=='\n'){
+      else if (peek().value() == '\n') {
         consume();
         line_num++;
       }
 
-      else{
-        cerr<<"Invalid Token"<<endl;
+      else {
+        cerr << "Invalid Token" << endl;
         exit(EXIT_FAILURE);
       }
     }
