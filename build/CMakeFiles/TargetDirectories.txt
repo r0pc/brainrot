@@ -1,0 +1,3 @@
+/home/mropc/Docs/brainrot/build/CMakeFiles/rot.dir
+/home/mropc/Docs/brainrot/build/CMakeFiles/edit_cache.dir
+/home/mropc/Docs/brainrot/build/CMakeFiles/rebuild_cache.dir

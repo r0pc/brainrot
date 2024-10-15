@@ -35,19 +35,19 @@ struct Token {
 
 class Tokenizer {
 public:
-  /*explicit Tokenizer(string src) : m_src(std::move(src)) {}*/
-  explicit Tokenizer(std::string src) : m_src(std::move(src)) {}
+  /*explicit Tokenizer(string src) : m_src(move(src)) {}*/
+  explicit Tokenizer(string src) : m_src(std::move(src)) {}
 
   vector<Token> tokenize() {
     string buffer;
     vector<Token> tokens;
     int line_num = 1;
-    while (peek()) {
-      if (isalpha(peek().value())) {
+    while (next()) {
+      if (isalpha(next().value())) {
 
         buffer.push_back(consume());
 
-        while (peek().has_value() && isalnum(peek().value())) {
+        while (next() && isalnum(next().value())) {
           buffer.push_back(consume());
         }
 
@@ -71,11 +71,11 @@ public:
           buffer.clear();
         }
 
-      } else if (isdigit(peek().value())) {
+      } else if (isdigit(next().value())) {
 
         buffer.push_back(consume());
 
-        while (peek().value() && isdigit(peek().value())) {
+        while (next().value() && isdigit(next().value())) {
           buffer.push_back(consume());
         }
 
@@ -83,29 +83,32 @@ public:
         buffer.clear();
       }
 
-      else if (peek().value() == '(') {
-        tokens.push_back({TokenType::open_pren, line_num});
-        buffer.clear();
-      } else if (peek().value() == ')') {
-        tokens.push_back({TokenType::close_pren, line_num});
-        buffer.clear();
-      } else if (peek().value() == '{') {
-        tokens.push_back({TokenType::open_curly, line_num});
-        buffer.clear();
-      } else if (peek().value() == '}') {
-        tokens.push_back({TokenType::close_curly, line_num});
-        buffer.clear();
-      } else if (peek().value() == '[') {
-        tokens.push_back({TokenType::open_box, line_num});
-        buffer.clear();
-      } else if (peek().value() == ']') {
-        tokens.push_back({TokenType::close_box, line_num});
-        buffer.clear();
-      } else if (isspace(peek().value())) {
+      else if (next().value() == '(') {
         consume();
-      } else if (peek().value() == '\n') {
+        tokens.push_back({TokenType::open_pren, line_num});
+      } else if (next().value() == ')') {
+        consume();
+        tokens.push_back({TokenType::close_pren, line_num});
+      } else if (next().value() == '{') {
+        consume();
+        tokens.push_back({TokenType::open_curly, line_num});
+      } else if (next().value() == '}') {
+        consume();
+        tokens.push_back({TokenType::close_curly, line_num});
+      } else if (next().value() == '[') {
+        consume();
+        tokens.push_back({TokenType::open_box, line_num});
+      } else if (next().value() == ']') {
+        consume();
+        tokens.push_back({TokenType::close_box, line_num});
+      } else if (next().value() == ';') {
+        consume();
+        tokens.push_back({TokenType::semi, line_num});
+      } else if (next().value() == '\n') {
         consume();
         line_num++;
+      } else if (isspace(next().value())) {
+        consume();
       }
 
       else {
@@ -118,14 +121,14 @@ public:
   }
 
 private:
-  [[nodiscard]] inline optional<char> peek(size_t offset = 0) {
+  [[nodiscard]] optional<char> next(size_t offset = 0) {
     if (m_index + offset >= m_src.length()) {
-      return NULL;
+      return {};
     }
     return m_src[m_index + offset];
   }
 
-  inline char consume() { return m_src[m_index++]; }
+  char consume() { return m_src.at(m_index++); }
 
   const string m_src;
   size_t m_index = 0;
