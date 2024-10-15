@@ -86,31 +86,24 @@ public:
       else if (peek().value() == '(') {
         tokens.push_back({TokenType::open_pren, line_num});
         buffer.clear();
-      }
-      else if (peek().value() == ')') {
+      } else if (peek().value() == ')') {
         tokens.push_back({TokenType::close_pren, line_num});
         buffer.clear();
-      }
-      else if (peek().value() == '{') {
+      } else if (peek().value() == '{') {
         tokens.push_back({TokenType::open_curly, line_num});
         buffer.clear();
-      }
-      else if (peek().value() == '}') {
+      } else if (peek().value() == '}') {
         tokens.push_back({TokenType::close_curly, line_num});
         buffer.clear();
-      }
-      else if (peek().value() == '[') {
+      } else if (peek().value() == '[') {
         tokens.push_back({TokenType::open_box, line_num});
         buffer.clear();
-      }
-      else if (peek().value() == ']') {
+      } else if (peek().value() == ']') {
         tokens.push_back({TokenType::close_box, line_num});
         buffer.clear();
-      }
-      else if (isspace(peek().value())) {
+      } else if (isspace(peek().value())) {
         consume();
-      }
-      else if (peek().value() == '\n') {
+      } else if (peek().value() == '\n') {
         consume();
         line_num++;
       }
