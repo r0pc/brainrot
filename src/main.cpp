@@ -26,13 +26,9 @@ int main(int argc, char *argv[]) {
   }
 
   cout<<contents<<endl;
-
+  //creates a vector of tokens
   Tokenizer tokenizer(std::move(contents));
   vector<Token> tokens = tokenizer.tokenize();
-
-  for(Token token:tokens){
-      cout<<token.line<<endl;
-      }
 
   return EXIT_SUCCESS;
 }
