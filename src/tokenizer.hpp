@@ -18,7 +18,7 @@ enum class TokenType {
   let,        // let, variable assignment operator
   _if,        // if
   _else,      // else
-  var,        // variable ex; x
+  ident,      // variable ex; x
   open_pren,  // '('
   close_pren, // ')'
   open_box,   // '['
@@ -30,7 +30,7 @@ enum class TokenType {
 struct Token {
   TokenType type;
   int line;
-  optional<string> value;
+  optional<string> value{};
 };
 
 class Tokenizer {
@@ -66,7 +66,7 @@ public:
           tokens.push_back({TokenType::_else, line_num});
           buffer.clear();
         } else {
-          tokens.push_back({TokenType::var, line_num, buffer});
+          tokens.push_back({TokenType::ident, line_num, buffer});
           buffer.clear();
         }
 
