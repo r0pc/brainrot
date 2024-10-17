@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <optional>
@@ -118,8 +120,8 @@ public:
   } // Allocates 5 mb
 
   void error_found(const string &err_msg) {
-    cerr << "Error In Parsing, Expected " << err_msg << " at line "
-         << next(-1).value().line << endl;
+    cerr << "Ya messed Up your syntax idiot, Expected " << err_msg
+         << " at line " << next(-1).value().line << endl;
     exit(EXIT_FAILURE);
   }
 
@@ -135,13 +137,86 @@ public:
       auto term = m_allocator.emplace<NodeTerm>(term_ident);
       return term;
     }
+
+    if (auto open_pren = try_consume(TokenType::open_pren)) {
+      auto expr = parse_expr();
+      if (!expr) {
+        error_found("expression");
+      }
+
+      try_consume_err(TokenType::close_pren);
+      auto term_pren = m_allocator.emplace<NodeTermParen>(expr.value());
+      auto term = m_allocator.emplace<NodeTerm>(term_pren);
+    }
+    return {};
   }
 
-  optional<NodeExpr *> parse_expr() {
+  optional<NodeExpr *> parse_expr(const int min_hier = 0) {
     optional<NodeTerm *> term_lhs = parse_term();
     if (!term_lhs) {
       return {};
     }
+    auto expr_lhs = m_allocator.emplace<NodeExpr>(term_lhs.value());
+
+    while (true) {
+      optional<Token> current = next();
+      optional<int> hier;
+
+      if (current) {
+        hier = bin_hier(current->type);
+        if (!hier || hier < min_hier) {
+          break;
+        }
+      } else {
+        break;
+      }
+
+      const auto [type, line, value] = consume();
+      const int next_min_hier = hier.value() + 1;
+      auto expr_rhs = parse_expr(next_min_hier);
+
+      if (!expr_rhs) {
+        error_found("expression");
+      }
+
+      auto expr = m_allocator.emplace<NodeBinExpr>();
+      auto expr_lhs_2 = m_allocator.emplace<NodeExpr>();
+
+      if (type == TokenType::add) {
+        expr_lhs_2->var = expr_lhs->var;
+        auto add =
+            m_allocator.emplace<NodeBinExprAdd>(expr_lhs_2, expr_rhs.value());
+        expr->var = add;
+      }
+
+      else if (type == TokenType::sub) {
+        expr_lhs_2->var = expr_lhs->var;
+        auto sub =
+            m_allocator.emplace<NodeBinExprSub>(expr_lhs_2, expr_rhs.value());
+        expr->var = sub;
+      }
+
+      else if (type == TokenType::mul) {
+        expr_lhs_2->var = expr_lhs->var;
+        auto mul =
+            m_allocator.emplace<NodeBinExprMulti>(expr_lhs_2, expr_rhs.value());
+        expr->var = mul;
+      }
+
+      else if (type == TokenType::div) {
+        expr_lhs_2->var = expr_lhs->var;
+        auto div =
+            m_allocator.emplace<NodeBinExprDiv>(expr_lhs_2, expr_rhs.value());
+        expr->var = div;
+      }
+
+      else {
+        assert(false);
+      }
+
+      expr_lhs->var = expr;
+    }
+    return expr_lhs;
   }
 
   optional<NodeStmt *> parse_stmt() {
@@ -193,7 +268,7 @@ private:
     if (next() && next().value().type == type) {
       return consume();
     }
-    error_found(to_string(type));
+    error_found(token_to_string(type));
     return {};
   }
 

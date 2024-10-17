@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
@@ -21,11 +22,55 @@ enum class TokenType {
   ident,      // variable ex; x
   open_pren,  // '('
   close_pren, // ')'
-  open_box,   // '['
-  close_box,  // ']'
-  open_curly, // '{'
-  close_curly // '}'
+  /*open_box,   // '['*/
+  /*close_box,  // ']'*/
+  /*open_curly, // '{'*/
+  /*close_curly // '}'*/
+
+  add, // '+'
+  sub, // '-'
+  mul, // '*'
+  div  // '/'
 };
+
+inline string token_to_string(const TokenType type) {
+  switch (type) {
+  case TokenType::_return:
+    return "'return'";
+  case TokenType::let:
+    return "'let'";
+  case TokenType::_int:
+    return "'int'";
+  case TokenType::semi:
+    return "';'";
+  case TokenType::_if:
+    return "'if'";
+  case TokenType::_else:
+    return "'else'";
+  case TokenType::ident:
+    return "'identifier'";
+  case TokenType::open_pren:
+    return "'('";
+  case TokenType::close_pren:
+    return "')'";
+  }
+  assert(false);
+}
+
+inline optional<int> bin_hier(const TokenType type) {
+  switch (type) {
+  case TokenType::add:
+  case TokenType::sub:
+    return 0;
+
+  case TokenType::div:
+  case TokenType::mul:
+    return 1;
+
+  default:
+    return {};
+  }
+}
 
 struct Token {
   TokenType type;
