@@ -13,19 +13,21 @@
 using namespace std;
 
 enum class TokenType {
-  _return,    // return
-  _int,       // integer
-  semi,       // ';'
-  let,        // let, variable assignment operator
-  _if,        // if
-  _else,      // else
-  ident,      // variable ex; x
-  open_pren,  // '('
-  close_pren, // ')'
-  /*open_box,   // '['*/
-  /*close_box,  // ']'*/
-  /*open_curly, // '{'*/
-  /*close_curly // '}'*/
+  _return, // return
+  _int,    // integer
+  semi,    // ';'
+  let,     // let, variable assignment operator
+  eq,      // '='
+  _if,     // if
+  _else,   // else
+  ident,   // variable ex; x
+
+  open_pren,   // '('
+  close_pren,  // ')'
+  open_box,    // '['
+  close_box,   // ']'
+  open_curly,  // '{'
+  close_curly, // '}'
 
   add, // '+'
   sub, // '-'
@@ -53,6 +55,25 @@ inline string token_to_string(const TokenType type) {
     return "'('";
   case TokenType::close_pren:
     return "')'";
+  case TokenType::eq:
+    return "'='";
+
+  case TokenType::add:
+    return "'+'";
+  case TokenType::mul:
+    return "'*'";
+  case TokenType::div:
+    return "'/'";
+  case TokenType::sub:
+    return "'-'";
+  case TokenType::open_box:
+    return "'['";
+  case TokenType::open_curly:
+    return "'{'";
+  case TokenType::close_box:
+    return "']'";
+  case TokenType::close_curly:
+    return "'}'";
   }
   assert(false);
 }
@@ -133,6 +154,9 @@ public:
       } else if (next().value() == ')') {
         consume();
         tokens.push_back({TokenType::close_pren, line_num});
+      } else if (next().value() == '=') {
+        consume();
+        tokens.push_back({TokenType::eq, line_num});
       } else if (next().value() == '{') {
         consume();
         tokens.push_back({TokenType::open_curly, line_num});

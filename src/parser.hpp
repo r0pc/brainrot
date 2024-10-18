@@ -49,17 +49,17 @@ struct NodeBinExprDiv {
 };
 
 struct NodeBinExpr {
-  std::variant<NodeBinExprAdd *, NodeBinExprMulti *, NodeBinExprSub *,
-               NodeBinExprDiv *>
+  variant<NodeBinExprAdd *, NodeBinExprMulti *, NodeBinExprSub *,
+          NodeBinExprDiv *>
       var;
 };
 
 struct NodeTerm {
-  std::variant<NodeTermInt *, NodeTermIdent *, NodeTermParen *> var;
+  variant<NodeTermInt *, NodeTermIdent *, NodeTermParen *> var;
 };
 
 struct NodeExpr {
-  std::variant<NodeTerm *, NodeBinExpr *> var;
+  variant<NodeTerm *, NodeBinExpr *> var;
 };
 
 struct NodeStmtExit {
@@ -74,7 +74,7 @@ struct NodeStmtLet {
 struct NodeStmt;
 
 struct NodeScope {
-  std::vector<NodeStmt *> stmts;
+  vector<NodeStmt *> stmts;
 };
 
 struct NodeIfPred;
@@ -82,7 +82,7 @@ struct NodeIfPred;
 struct NodeIfPredElif {
   NodeExpr *expr{};
   NodeScope *scope{};
-  std::optional<NodeIfPred *> pred;
+  optional<NodeIfPred *> pred;
 };
 
 struct NodeIfPredElse {
@@ -90,13 +90,13 @@ struct NodeIfPredElse {
 };
 
 struct NodeIfPred {
-  std::variant<NodeIfPredElif *, NodeIfPredElse *> var;
+  variant<NodeIfPredElif *, NodeIfPredElse *> var;
 };
 
 struct NodeStmtIf {
   NodeExpr *expr{};
   NodeScope *scope{};
-  std::optional<NodeIfPred *> pred;
+  optional<NodeIfPred *> pred;
 };
 
 struct NodeStmtAssign {
@@ -105,13 +105,13 @@ struct NodeStmtAssign {
 };
 
 struct NodeStmt {
-  std::variant<NodeStmtExit *, NodeStmtLet *, NodeScope *, NodeStmtIf *,
-               NodeStmtAssign *>
+  variant<NodeStmtExit *, NodeStmtLet *, NodeScope *, NodeStmtIf *,
+          NodeStmtAssign *>
       var;
 };
 
 struct NodeProg {
-  std::vector<NodeStmt *> stmts;
+  vector<NodeStmt *> stmts;
 };
 class Parser {
 public:
@@ -220,28 +220,90 @@ public:
   }
 
   optional<NodeStmt *> parse_stmt() {
-    if (next() && next()->type == TokenType::_return && next(1) &&
-        next(1)->type == TokenType::open_pren) {
+    if (next() && next().value().type == TokenType::_return && next(1) &&
+        next().value().type == TokenType::open_pren) {
       consume();
       consume();
-      auto stmt_exit = m_allocator.alloc<NodeStmtExit>();
+
+      auto stmt_exit = m_allocator.emplace<NodeStmtExit>();
       auto node_expr = parse_expr();
+
       if (node_expr) {
         stmt_exit->expr = node_expr.value();
       } else {
-        error_found("expression");
+        error_found("Expression");
       }
+
+      try_consume_err(TokenType::close_pren);
+      try_consume_err(TokenType::semi);
+
+      auto stmt = m_allocator.emplace<NodeStmt>();
+      stmt->var = stmt_exit;
+
+      return stmt;
     }
+
+    if (next() && next().value().type == TokenType::let && next(1) &&
+        next(1).value().type == TokenType::ident && next(2) &&
+        next().value().type == TokenType::eq) {
+
+      consume();
+
+      auto stmt_let = m_allocator.emplace<NodeStmtLet>();
+      stmt_let->ident = consume();
+      consume();
+
+      auto expr = parse_expr();
+
+      if (expr) {
+        stmt_let->expr = expr.value();
+      } else {
+        error_found("Expression");
+      }
+
+      try_consume_err(TokenType::semi);
+
+      auto stmt = m_allocator.emplace<NodeStmt>();
+      stmt->var = stmt_let;
+
+      return stmt;
+    }
+
+    if (next() && next().value().type == TokenType::ident && next(1) &&
+        next().value().type == TokenType::eq) {
+
+      auto assign = m_allocator.emplace<NodeStmtAssign>();
+      assign->ident = consume();
+      consume();
+
+      auto expr = parse_expr();
+
+      if (expr) {
+        assign->expr = expr.value();
+      } else {
+        error_found("Expression");
+      }
+
+      try_consume_err(TokenType::semi);
+
+      auto stmt = m_allocator.emplace<NodeStmt>(assign);
+
+      return stmt;
+    }
+
+    return {};
   }
 
   optional<NodeProg> parse_prog() {
     NodeProg prog;
+
     while (next()) {
       auto stmt = parse_stmt();
+
       if (stmt) {
         prog.stmts.push_back(stmt.value());
       } else {
-        error_found("Stmt");
+        error_found("statement");
       }
     }
     return prog;
@@ -268,6 +330,7 @@ private:
     if (next() && next().value().type == type) {
       return consume();
     }
+
     error_found(token_to_string(type));
     return {};
   }
