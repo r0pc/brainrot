@@ -116,7 +116,7 @@ public:
           buffer.push_back(consume());
         }
 
-        if (buffer == "return") {
+        if (buffer == "exit") {
           tokens.push_back({TokenType::_return, line_num});
           buffer.clear();
         } else if (buffer == "let") {
@@ -157,6 +157,18 @@ public:
       } else if (next().value() == '=') {
         consume();
         tokens.push_back({TokenType::eq, line_num});
+      } else if (next().value() == '+') {
+        consume();
+        tokens.push_back({TokenType::add, line_num});
+      } else if (next().value() == '+') {
+        consume();
+        tokens.push_back({TokenType::sub, line_num});
+      } else if (next().value() == '/') {
+        consume();
+        tokens.push_back({TokenType::div, line_num});
+      } else if (next().value() == '*') {
+        consume();
+        tokens.push_back({TokenType::mul, line_num});
       } else if (next().value() == '{') {
         consume();
         tokens.push_back({TokenType::open_curly, line_num});

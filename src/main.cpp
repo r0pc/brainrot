@@ -1,13 +1,18 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <optional>
+#include <ostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
+#include "parser.hpp"
 #include "tokenizer.hpp"
 
 using namespace std;
+
+void check_file_type(string filename);
 
 int main(int argc, char *argv[]) {
   // checks if input file is provided
@@ -15,6 +20,8 @@ int main(int argc, char *argv[]) {
     cerr << "No File Provided" << endl;
     return EXIT_FAILURE;
   }
+
+  check_file_type(argv[1]);
 
   string contents;
   // adds file contents to contents
@@ -25,10 +32,28 @@ int main(int argc, char *argv[]) {
     contents = contents_stream.str();
   }
 
-  cout<<contents<<endl;
-  //creates a vector of tokens
+  cout << contents << endl;
+  // creates a vector of tokens
   Tokenizer tokenizer(std::move(contents));
   vector<Token> tokens = tokenizer.tokenize();
 
+  Parser parser(std::move(tokens));
+  optional<NodeProg> prog = parser.parse_prog();
+
+  if (!prog) {
+    cerr << "Invalid Program" << endl;
+    exit(EXIT_FAILURE);
+  }
+
   return EXIT_SUCCESS;
+}
+
+void check_file_type(string filename) {
+  if (filename.length() >= 4 &&
+      filename.substr(filename.length() - 4) == ".rot")
+    return;
+  else {
+    cerr << "Incorrect file" << endl;
+    return exit(EXIT_FAILURE);
+  }
 }

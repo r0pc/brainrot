@@ -120,8 +120,8 @@ public:
   } // Allocates 5 mb
 
   void error_found(const string &err_msg) {
-    cerr << "Ya messed Up your syntax idiot, Expected " << err_msg
-         << " at line " << next(-1).value().line << endl;
+    cerr << "Syntax Error, Expected " << err_msg << " at line "
+         << next(-1).value().line << endl;
     exit(EXIT_FAILURE);
   }
 
@@ -220,8 +220,8 @@ public:
   }
 
   optional<NodeStmt *> parse_stmt() {
-    if (next() && next().value().type == TokenType::_return && next(1) &&
-        next().value().type == TokenType::open_pren) {
+    if (next().has_value() && next().value().type == TokenType::_return &&
+        next(1).has_value() && next(1).value().type == TokenType::open_pren) {
       consume();
       consume();
 
@@ -243,9 +243,9 @@ public:
       return stmt;
     }
 
-    if (next() && next().value().type == TokenType::let && next(1) &&
-        next(1).value().type == TokenType::ident && next(2) &&
-        next().value().type == TokenType::eq) {
+    if (next().has_value() && next().value().type == TokenType::let &&
+        next(1).has_value() && next(1).value().type == TokenType::ident &&
+        next(2).has_value() && next(2).value().type == TokenType::eq) {
 
       consume();
 
@@ -270,7 +270,7 @@ public:
     }
 
     if (next() && next().value().type == TokenType::ident && next(1) &&
-        next().value().type == TokenType::eq) {
+        next(1).value().type == TokenType::eq) {
 
       auto assign = m_allocator.emplace<NodeStmtAssign>();
       assign->ident = consume();
@@ -298,9 +298,8 @@ public:
     NodeProg prog;
 
     while (next()) {
-      auto stmt = parse_stmt();
 
-      if (stmt) {
+      if (auto stmt = parse_stmt()) {
         prog.stmts.push_back(stmt.value());
       } else {
         error_found("statement");
