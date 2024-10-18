@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <fstream>
+#include <ios>
 #include <iostream>
 #include <optional>
 #include <ostream>
@@ -7,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "generator.hpp"
 #include "parser.hpp"
 #include "tokenizer.hpp"
 
@@ -44,6 +46,15 @@ int main(int argc, char *argv[]) {
     cerr << "Invalid Program" << endl;
     exit(EXIT_FAILURE);
   }
+
+  {
+    Generator generator(prog.value());
+    fstream file("out.asm", ios::out);
+    file << generator.gen_prog();
+  }
+  /**/
+  /*system("nasm -felf64 out.asm");*/
+  /*system("ld -o out out.o");*/
 
   return EXIT_SUCCESS;
 }

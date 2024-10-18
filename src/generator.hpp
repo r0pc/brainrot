@@ -114,89 +114,62 @@ public:
     visit(visitor, expr->var);
   }
 
-  /*  void gen_stmt(const NodeStmt *stmt){*/
-  /**/
-  /*      struct StmtVisitor{Generator & gen;*/
-  /*  void operator()(const NodeStmtExit *stmt_exit) const {*/
-  /*    gen.gen_expr(stmt_exit->expr);*/
-  /*    gen.m_output << "\tmov rax, 60\n";*/
-  /*    gen.pop("rdi");*/
-  /*    gen.m_output << "\tsyscall\n";*/
-  /*  }*/
-  /**/
-  /*  void operator()(const NodeStmtLet *stmt_let) const {*/
-  /*    const auto i =*/
-  /*        find_if(gen.m_vars.cbegin(), gen.m_vars.cend(), [&](const Var &var)
-   * {*/
-  /*          return var.name == stmt_let->ident.value.value();*/
-  /*        });*/
-  /**/
-  /*    if (i != gen.m_vars.cend()) {*/
-  /**/
-  /*      cerr << "Identifier already declared" << endl;*/
-  /*      exit(EXIT_FAILURE);*/
-  /*    }*/
-  /**/
-  /*    gen.m_vars.push_back*/
-  /*  }*/
-  /*} void operator()(const NodeStmtAssign *stmt_assign) const {*/
-  /*}*/
-  /*}*/
-  /*;*/
-  /**/
-  /*StmtVisitor visitor{.gen = *this};*/
-  /*visit(visitor, stmt->var);*/
-  /*}*/
-
   void gen_stmt(const NodeStmt *stmt) {
     struct StmtVisitor {
       Generator &gen;
 
       void operator()(const NodeStmtExit *stmt_exit) const {
-        gen.m_output << "    ;; exit\n";
+        gen.m_output << "\t;; exit\n";
         gen.gen_expr(stmt_exit->expr);
-        gen.m_output << "    mov rax, 60\n";
+        gen.m_output << "\tmov rax, 60\n";
         gen.pop("rdi");
-        gen.m_output << "    syscall\n";
-        gen.m_output << "    ;; /exit\n";
+        gen.m_output << "\tsyscall\n";
+        gen.m_output << "\t;; /exit\n";
       }
 
       void operator()(const NodeStmtLet *stmt_let) const {
-        gen.m_output << "    ;; let\n";
+        gen.m_output << "\t;; let\n";
 
-        if (std::ranges::find_if(
-                std::as_const(gen.m_vars), [&](const Var &var) {
-                  return var.name == stmt_let->ident.value.value();
-                }) != gen.m_vars.cend()) {
+        const auto i = find_if(
+            gen.m_vars.cbegin(), gen.m_vars.cend(), [&](const Var &var) {
+              return var.name == stmt_let->ident.value.value();
+            });
 
-          std::cerr << "Identifier already used: "
-                    << stmt_let->ident.value.value() << std::endl;
+        if (i != gen.m_vars.cend()) {
+          cerr << "Identifier already exists '" << stmt_let->ident.value.value()
+               << "'" << endl;
           exit(EXIT_FAILURE);
         }
+
         gen.m_vars.push_back({.name = stmt_let->ident.value.value(),
                               .stack_loc = gen.m_stack_size});
         gen.gen_expr(stmt_let->expr);
-        gen.m_output << "    ;; /let\n";
+        gen.m_output << "\t;; /let\n";
       }
 
       void operator()(const NodeStmtAssign *stmt_assign) const {
-        const auto it = std::ranges::find_if(gen.m_vars, [&](const Var &var) {
-          return var.name == stmt_assign->ident.value.value();
-        });
-        if (it == gen.m_vars.end()) {
-          std::cerr << "Undeclared identifier: "
-                    << stmt_assign->ident.value.value() << std::endl;
+
+        const auto i = find_if(
+            gen.m_vars.cbegin(), gen.m_vars.cend(), [&](const Var &var) {
+              return var.name == stmt_assign->ident.value.value();
+            });
+
+        if (i == gen.m_vars.end()) {
+          cerr << "Undeclared Identifier: " << stmt_assign->ident.value.value()
+               << endl;
           exit(EXIT_FAILURE);
         }
         gen.gen_expr(stmt_assign->expr);
         gen.pop("rax");
-        gen.m_output << "    mov [rsp + "
-                     << (gen.m_stack_size - it->stack_loc - 1) * 8
-                     << "], rax\n";
+        gen.m_output << "\tmov [rsp + "
+                     << (gen.m_stack_size - i->stack_loc - 1) * 8 << "], rax\n";
       }
+
+      void operator()(const NodeScope *scope) const {}
+      void operator()(const NodeStmtIf *stmt_if) const {}
     };
     StmtVisitor visitor{.gen = *this};
-    std::visit(visitor, stmt->var);
+    visit(visitor, stmt->var);
   }
 
   [[nodiscard]] string gen_prog() {
@@ -206,8 +179,8 @@ public:
       gen_stmt(stmt);
     }
 
-    m_output << "\tmove rax, 60\n";
-    m_output << "\tmove rdi, 0\n";
+    m_output << "\tmov rax, 60\n";
+    m_output << "\tmov rdi, 0\n";
     m_output << "\tsyscall\n";
 
     return m_output.str();

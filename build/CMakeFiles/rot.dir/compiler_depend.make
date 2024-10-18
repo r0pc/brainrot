@@ -3,6 +3,7 @@
 
 CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /home/mropc/Docs/brainrot/src/arena.hpp \
+  /home/mropc/Docs/brainrot/src/generator.hpp \
   /home/mropc/Docs/brainrot/src/parser.hpp \
   /home/mropc/Docs/brainrot/src/tokenizer.hpp \
   /usr/include/alloca.h \
@@ -94,9 +95,11 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /usr/include/bits/wctype-wchar.h \
   /usr/include/bits/wordsize.h \
   /usr/include/bits/xopen_lim.h \
+  /usr/include/c++/14.2.1/algorithm \
   /usr/include/c++/14.2.1/backward/auto_ptr.h \
   /usr/include/c++/14.2.1/backward/binders.h \
   /usr/include/c++/14.2.1/bit \
+  /usr/include/c++/14.2.1/bits/algorithmfwd.h \
   /usr/include/c++/14.2.1/bits/align.h \
   /usr/include/c++/14.2.1/bits/alloc_traits.h \
   /usr/include/c++/14.2.1/bits/allocated_ptr.h \
@@ -145,6 +148,7 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /usr/include/c++/14.2.1/bits/predefined_ops.h \
   /usr/include/c++/14.2.1/bits/ptr_traits.h \
   /usr/include/c++/14.2.1/bits/range_access.h \
+  /usr/include/c++/14.2.1/bits/ranges_algo.h \
   /usr/include/c++/14.2.1/bits/ranges_algobase.h \
   /usr/include/c++/14.2.1/bits/ranges_base.h \
   /usr/include/c++/14.2.1/bits/ranges_cmp.h \
@@ -159,10 +163,12 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /usr/include/c++/14.2.1/bits/sstream.tcc \
   /usr/include/c++/14.2.1/bits/std_abs.h \
   /usr/include/c++/14.2.1/bits/std_mutex.h \
+  /usr/include/c++/14.2.1/bits/stl_algo.h \
   /usr/include/c++/14.2.1/bits/stl_algobase.h \
   /usr/include/c++/14.2.1/bits/stl_bvector.h \
   /usr/include/c++/14.2.1/bits/stl_construct.h \
   /usr/include/c++/14.2.1/bits/stl_function.h \
+  /usr/include/c++/14.2.1/bits/stl_heap.h \
   /usr/include/c++/14.2.1/bits/stl_iterator.h \
   /usr/include/c++/14.2.1/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14.2.1/bits/stl_iterator_base_types.h \
@@ -176,6 +182,7 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /usr/include/c++/14.2.1/bits/streambuf_iterator.h \
   /usr/include/c++/14.2.1/bits/string_view.tcc \
   /usr/include/c++/14.2.1/bits/stringfwd.h \
+  /usr/include/c++/14.2.1/bits/uniform_int_dist.h \
   /usr/include/c++/14.2.1/bits/unique_ptr.h \
   /usr/include/c++/14.2.1/bits/uses_allocator.h \
   /usr/include/c++/14.2.1/bits/uses_allocator_args.h \
@@ -220,6 +227,7 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
   /usr/include/c++/14.2.1/optional \
   /usr/include/c++/14.2.1/ostream \
   /usr/include/c++/14.2.1/pstl/execution_defs.h \
+  /usr/include/c++/14.2.1/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14.2.1/pstl/glue_memory_defs.h \
   /usr/include/c++/14.2.1/pstl/pstl_config.h \
   /usr/include/c++/14.2.1/sstream \
@@ -321,8 +329,6 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/stdc-predef.h:
 
-/usr/include/locale.h:
-
 /usr/include/linux/limits.h:
 
 /usr/include/linux/close_range.h:
@@ -335,7 +341,11 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/os_defines.h:
 
-/usr/include/c++/14.2.1/bits/istream.tcc:
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/ctype_base.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++io.h:
 
 /usr/include/c++/14.2.1/bits/invoke.h:
 
@@ -352,8 +362,6 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/bits/floatn.h:
 
 /usr/include/c++/14.2.1/bits/cpp_type_traits.h:
-
-/usr/include/c++/14.2.1/bits/locale_classes.h:
 
 /usr/include/syscall.h:
 
@@ -403,8 +411,6 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/bits/shared_ptr_atomic.h:
 
-/usr/include/c++/14.2.1/bits/iterator_concepts.h:
-
 /usr/include/bits/types/wint_t.h:
 
 /usr/include/c++/14.2.1/bits/basic_ios.h:
@@ -445,8 +451,6 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/bits/stl_tempbuf.h:
 
-/usr/include/bits/types/__fpos64_t.h:
-
 /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.1/include/stdint.h:
 
 /usr/include/bits/flt-eval-method.h:
@@ -454,6 +458,18 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/bits/libc-header-start.h:
 
 /usr/include/c++/14.2.1/ext/aligned_buffer.h:
+
+/usr/include/errno.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++locale.h:
+
+/usr/include/bits/getopt_posix.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/ctype_inline.h:
+
+/usr/include/bits/unistd_ext.h:
+
+/usr/include/c++/14.2.1/bits/uses_allocator.h:
 
 /usr/include/bits/thread-shared-types.h:
 
@@ -470,6 +486,8 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/bits/parse_numbers.h:
 
 /usr/include/c++/14.2.1/bits/shared_ptr_base.h:
+
+/home/mropc/Docs/brainrot/src/generator.hpp:
 
 /usr/include/bits/errno.h:
 
@@ -492,6 +510,10 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/utility:
 
 /usr/include/bits/libm-simd-decl-stubs.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/getopt_core.h:
 
 /usr/include/c++/14.2.1/bits/functexcept.h:
 
@@ -517,6 +539,12 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/bits/stl_function.h:
 
+/usr/include/bits/byteswap.h:
+
+/usr/include/c++/14.2.1/bits/basic_ios.tcc:
+
+/usr/include/bits/time64.h:
+
 /usr/include/bits/types/struct_FILE.h:
 
 /usr/include/bits/environments.h:
@@ -527,13 +555,11 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/cstdio:
 
-/usr/include/bits/byteswap.h:
-
-/usr/include/c++/14.2.1/bits/basic_ios.tcc:
-
-/usr/include/bits/time64.h:
-
 /usr/include/alloca.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/gthr.h:
+
+/usr/include/bits/stdint-least.h:
 
 /usr/include/c++/14.2.1/tr1/exp_integral.tcc:
 
@@ -552,6 +578,10 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/bits/version.h:
 
 /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/atomic_word.h:
+
+/usr/include/locale.h:
+
+/usr/include/c++/14.2.1/bits/uniform_int_dist.h:
 
 /usr/include/c++/14.2.1/bits/uses_allocator_args.h:
 
@@ -603,6 +633,8 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/bits/types/struct___jmp_buf_tag.h:
 
+/usr/include/c++/14.2.1/bits/algorithmfwd.h:
+
 /usr/include/bits/select.h:
 
 /usr/include/c++/14.2.1/tr1/special_function_util.h:
@@ -620,6 +652,10 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/exception:
 
 /usr/include/bits/types/struct_timeval.h:
+
+/usr/include/bits/types/__fpos64_t.h:
+
+/usr/include/c++/14.2.1/pstl/glue_algorithm_defs.h:
 
 /usr/include/c++/14.2.1/bits/exception.h:
 
@@ -641,21 +677,13 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/stdexcept:
 
-/usr/include/bits/unistd_ext.h:
-
-/usr/include/c++/14.2.1/bits/uses_allocator.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/ctype_inline.h:
-
 /usr/include/bits/mathcalls-helper-functions.h:
 
-/usr/include/bits/getopt_core.h:
+/usr/include/c++/14.2.1/bits/istream.tcc:
 
-/usr/include/bits/types.h:
+/usr/include/c++/14.2.1/bits/iterator_concepts.h:
 
-/usr/include/bits/stdint-least.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/gthr.h:
+/usr/include/c++/14.2.1/bits/locale_classes.h:
 
 /usr/include/bits/struct_mutex.h:
 
@@ -689,7 +717,11 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 
 /usr/include/c++/14.2.1/bits/ostream_insert.h:
 
+/usr/include/c++/14.2.1/algorithm:
+
 /usr/include/c++/14.2.1/bits/postypes.h:
+
+/usr/include/c++/14.2.1/bits/ranges_algo.h:
 
 /usr/include/c++/14.2.1/bits/ranges_algobase.h:
 
@@ -722,6 +754,24 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/bits/std_mutex.h:
 
 /usr/include/c++/14.2.1/ext/numeric_traits.h:
+
+/usr/include/c++/14.2.1/bits/stl_algo.h:
+
+/usr/include/c++/14.2.1/compare:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h:
+
+/home/mropc/Docs/brainrot/src/tokenizer.hpp:
+
+/usr/include/c++/14.2.1/bits/std_abs.h:
+
+/usr/include/c++/14.2.1/bits/stl_bvector.h:
+
+/usr/include/c++/14.2.1/bits/stl_heap.h:
+
+/usr/include/c++/14.2.1/bits/stl_algobase.h:
+
+/usr/include/c++/14.2.1/cstdlib:
 
 /usr/include/c++/14.2.1/bits/stl_iterator_base_types.h:
 
@@ -784,12 +834,6 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/bits/posix1_lim.h:
 
 /usr/include/c++/14.2.1/clocale:
-
-/usr/include/c++/14.2.1/compare:
-
-/usr/include/c++/14.2.1/bits/stl_algobase.h:
-
-/usr/include/c++/14.2.1/cstdlib:
 
 /usr/include/c++/14.2.1/cstring:
 
@@ -864,23 +908,3 @@ CMakeFiles/rot.dir/src/main.cpp.o: /home/mropc/Docs/brainrot/src/main.cpp \
 /usr/include/c++/14.2.1/system_error:
 
 /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++allocator.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++io.h:
-
-/usr/include/errno.h:
-
-/usr/include/bits/getopt_posix.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++locale.h:
-
-/home/mropc/Docs/brainrot/src/tokenizer.hpp:
-
-/usr/include/c++/14.2.1/bits/std_abs.h:
-
-/usr/include/c++/14.2.1/bits/stl_bvector.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/ctype_base.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h:
