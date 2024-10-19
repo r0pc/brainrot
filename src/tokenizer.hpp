@@ -20,7 +20,8 @@ enum class TokenType {
   eq,      // '='
   _if,     // if
   _else,   // else
-  ident,   // variable ex; x
+  elif,
+  ident, // variable ex; x
 
   open_pren,   // '('
   close_pren,  // ')'
@@ -130,6 +131,9 @@ public:
           buffer.clear();
         } else if (buffer == "else") {
           tokens.push_back({TokenType::_else, line_num});
+          buffer.clear();
+        } else if (buffer == "elif") {
+          tokens.push_back({TokenType::elif, line_num});
           buffer.clear();
         } else {
           tokens.push_back({TokenType::ident, line_num, buffer});

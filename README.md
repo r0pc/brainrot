@@ -2,7 +2,11 @@
 #### To do list:
 * Read from File
 * Create a tokenizer
-* create a parser
+* Create a parser
 * Add varible declrations and assginment
 * Add arithmatic operations
-* generate code
+* Generate code
+* If else statements
+* Loops
+* Console Output
+* Comments

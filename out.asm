@@ -4,6 +4,10 @@ _start :
 	mov rax, 1
 	push rax
 	;; /let
+	mov rax, 10
+	push rax
+	pop rax
+	mov [rsp + 0], rax
 	;; let
 	mov rax, 2
 	push rax
@@ -21,7 +25,7 @@ _start :
 	mov rax, 60
 	pop rdi
 	syscall
- ;; /exit
+	;; /exit
 	mov rax, 60
 	mov rdi, 0
 	syscall

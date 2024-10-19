@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   }
 
   cout << contents << endl;
-  // creates a vector of tokens
+
   Tokenizer tokenizer(std::move(contents));
   vector<Token> tokens = tokenizer.tokenize();
 
@@ -52,19 +52,19 @@ int main(int argc, char *argv[]) {
     fstream file("out.asm", ios::out);
     file << generator.gen_prog();
   }
-  /**/
-  /*system("nasm -felf64 out.asm");*/
-  /*system("ld -o out out.o");*/
+
+  system("nasm -felf64 out.asm");
+  system("ld -o out out.o");
 
   return EXIT_SUCCESS;
 }
 
 void check_file_type(string filename) {
   if (filename.length() >= 4 &&
-      filename.substr(filename.length() - 4) == ".rot")
+      filename.substr(filename.length() - 4) == ".rot") {
     return;
-  else {
-    cerr << "Incorrect file" << endl;
-    return exit(EXIT_FAILURE);
   }
+
+  cerr << "Incorrect file" << endl;
+  exit(EXIT_FAILURE);
 }
